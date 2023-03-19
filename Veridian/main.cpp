@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "World.h"
 #include <math.h>
+#include "EntityManager.h"
 
 
 DisplayManager gDisplayManager(1920, 1080);
@@ -26,15 +27,26 @@ int main(int argc, char* args[]) {
 	gDisplayManager.activeCamera = camera;
 	World* world = new World();
 
+	EntityManager* entityManager = new EntityManager;
+
+	int entityId1 = entityManager->CreateEntity();
+	entityManager->AddComponent(entityId1, "position");
+	entityManager->AddComponent(entityId1, "velocity");
+
 
 	// start main loop
 	while (!quit) {
+		// handle SDL event stack
 		while (SDL_PollEvent(&e) != 0) {
+			// handle exit event
 			if (e.type == SDL_QUIT) {
 				quit = true;
 			}
+			else if(e.type == SDL_KEYDOWN) {
+
+			}
 		}
-		// test moving the camera around
+		
 		// draw to the screen
 		gDisplayManager.frameSetup();
 		gDisplayManager.drawWorld(world);
