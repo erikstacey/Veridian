@@ -6,12 +6,6 @@ I'm utilizing Simple Directmedia Layer 2 (SDL2) as my interface with the graphic
 most of my work has been tinkering with various implementations of a basic program structure to wrap my head around the entity-component-system with very
 little actual game engine programming. With a decent understanding of what I'd like to accomplish now, I'm working on making an actual functional prototype.
 
-Currently, the only functional component is the display system which
-supports loading and displaying 2D textures. There is also a basic structure for creating tilemap worlds and viewing them through a move-able, zoom-able
-viewport/camera.
+Currently, the game engine consists of a display system which can interface with world objects containing background tilemaps. The basic entity-component architecture is in place, with entities consisting of a unique integer ID. While only one datatype (a Vector2 object, containing two floats) is currently implemented, the system is sufficiently general that one can create new components just by calling a function corresponding to the desired datatype and giving it a name. Components are generally unaware of each other, and the entity manager doesn't even know what components each entity has; when doing something like acting to destroy an entity, it is left up to each component to determine if they contain data about that entity and destroy it.
 
-Plan for near future:
-
-Implement a prototype of the entity component system structure, using a position and velocity component and a motion system.
-
-Implement a basic set of controls and rudimentary player entity
+The next step is to implement a basic system (of the entity-component-system), which operates on components.
