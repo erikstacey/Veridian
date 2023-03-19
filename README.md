@@ -11,4 +11,5 @@ Currently, the game engine consists of a display system which can interface with
 The next step is to implement a basic system (of the entity-component-system), which operates on components.
 
 Author: Erik Stacey
+
 Updated: 18 March 2023
