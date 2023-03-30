@@ -6,6 +6,7 @@
 
 
 DisplayManager::DisplayManager(int w, int h) {
+	// Constructor for displaymanager initializes SDL, then creates a window and renderer, and finally loads all textures
 	printf("[INIT] Display manager starting with w=%d, h=%d\n", w, h);
 	displayWidth = w;
 	displayHeight = h;
@@ -41,6 +42,7 @@ DisplayManager::~DisplayManager() {
 }
 
 bool DisplayManager::bootSDL() {
+	// Starts up SDL and SDL image
 	bool s = true;
 	printf("[INIT] SDL: ");
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -63,6 +65,7 @@ bool DisplayManager::bootSDL() {
 }
 
 bool DisplayManager::renderWindowSetup(int w, int h) {
+	// Creates a window and renderer
 	bool s = true;
 	// set up window and renderer
 	window = SDL_CreateWindow("GameEnginePrototype", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
@@ -94,6 +97,7 @@ bool DisplayManager::renderWindowSetup(int w, int h) {
 }
 
 bool DisplayManager::loadTex(std::string fname, int index) {
+	// Loads a single texture using SDL_Image IMG_Load, then stores it in the textures array at position index
 	bool s = true;
 	SDL_Surface* loadedSurface = IMG_Load(fname.c_str());
 	if (loadedSurface == NULL) {
@@ -117,6 +121,7 @@ bool DisplayManager::loadTex(std::string fname, int index) {
 }
 
 bool DisplayManager::loadAllTextures(std::string registry) {
+	// A method to load all textures. Currently temporary.
 	loadTex("res/textures/grass1.png", 0);
 	loadTex("res/textures/water1.png", 1);
 	loadTex("res/textures/stone1.png", 2);
@@ -125,6 +130,8 @@ bool DisplayManager::loadAllTextures(std::string registry) {
 }
 
 void DisplayManager::drawTex(Vector2 screenCoordinates, int textureId, float scale) {
+	// Draws a texture indicated by textureId at screenCoordinates scaled by scale. Note that screencoordinates are the
+	// pixel coordinates of the window. E.g. for a 1920x1080 screen, Vector2.x must be greater than zero and less than 1920.
 	SDL_Rect drawRect = { screenCoordinates.x, screenCoordinates.y, 16*scale, 16*scale};
 	SDL_RenderCopy(renderer, textures[textureId], NULL, &drawRect);
 }
@@ -135,13 +142,5 @@ void DisplayManager::frameSetup() {
 }
 void DisplayManager::framePush(){
 	SDL_RenderPresent(renderer);
-}
-
-void DisplayManager::drawWorld(World* worldPtr) {
-	for (int i = 0; i < worldPtr->sizeX; i++) {
-		for (int k = 0; k < worldPtr->sizeY; k++) {
-			drawTex(activeCamera->transformWorldToLocal(Vector2(i, k)), worldPtr->tilemap[i][k], activeCamera->zoom);
-		}
-	}
 }
 

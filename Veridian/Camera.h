@@ -10,16 +10,16 @@ to local camera coordinates.
 class Camera
 {
 public:
-	Vector2 pos; // bottom left
+	Vector2* pos; // bottom left
 	Vector2 transformVector; // stores results of coordinate transforms
 	int w = 0;
 	int h = 0;
 	float zoom = 1;
 	Camera();
-	Camera(Vector2 pos, int spanX, int spanY);
+	Camera(Vector2* pos, int spanX, int spanY);
 
-	Vector2 transformWorldToLocal(Vector2 worldCoordinates);
-
-	void updatePos(Vector2 vecCenter);
+	Vector2 TransformWorldToLocal(Vector2 worldCoordinates);
+	Vector2 TransformLocalToWorld(Vector2 localCoordinates);
+	bool IsVisible(Rectangle r);
 };
 

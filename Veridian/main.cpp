@@ -9,31 +9,24 @@
 #include "World.h"
 #include <math.h>
 #include "EntityManager.h"
-
-
-DisplayManager gDisplayManager(1920, 1080);
+#include "ComponentPosition.h"
+#include "Vector2.h"
 
 
 int main(int argc, char* args[]) {
+	DisplayManager displayManager(1920, 1080);
+
+	ComponentPosition testComponentPosition;
+	testComponentPosition.RegisterEntity(1);
+	testComponentPosition.SetValue(1, Vector2(0, 3.2));
+	Vector2* testVector = testComponentPosition.GetValue(1);
+	printf("%f, %f", testVector->x, testVector->y);
+
+	testComponentPosition.UnregisterEntity(1);
+
 	SDL_Event e;
 	bool quit = false;
-
-	Rectangle test_rect;
-
-	// make a camera
-
-	Camera* camera = new Camera(Vector2(0, 0), 1920, 1080);
-	camera->zoom = 0.5;
-	gDisplayManager.activeCamera = camera;
 	World* world = new World();
-
-	EntityManager* entityManager = new EntityManager;
-
-	int entityId1 = entityManager->CreateEntity();
-	entityManager->AddComponent(entityId1, "position");
-	entityManager->AddComponent(entityId1, "velocity");
-
-
 	// start main loop
 	while (!quit) {
 		// handle SDL event stack
@@ -48,9 +41,8 @@ int main(int argc, char* args[]) {
 		}
 		
 		// draw to the screen
-		gDisplayManager.frameSetup();
-		gDisplayManager.drawWorld(world);
-		gDisplayManager.framePush();
+		displayManager.frameSetup();
+		displayManager.framePush();
 
 	}
 	return 0;

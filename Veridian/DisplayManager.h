@@ -24,10 +24,6 @@ public:
 	// Keeping the textures limited means we can use 2-byte integers in
 	// world tilemaps, saving ram
 
-	void drawWorld(World* worldPtr);
-
-	Camera* activeCamera;
-
 private:
 	SDL_Renderer* renderer = NULL;
 	SDL_Window* window = NULL;

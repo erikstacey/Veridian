@@ -1,10 +1,20 @@
 #pragma once
-class World
-{
+#include "EntityManager.h"
+
+/*
+A world is a self-contained gameworld, with a coordinate system, a tilemap, an entity system, and a set of behavioural systems.
+They are unreliant on anything outside themself except for the SDL interfaces, which make them suitable for things like separate
+dimensions, planets, levels, etc.
+*/
+
+class DisplayManager;
+
+class World {
 public:
 	World();
-	unsigned short int tilemap[1024][1024];
-	int sizeX = 1024;
-	int sizeY = 1024;
+	World(DisplayManager* displayManager);
+	~World();
+	EntityManager* entityManager;
+	DisplayManager* displayManager;
 };
 
