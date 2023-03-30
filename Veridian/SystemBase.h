@@ -10,11 +10,6 @@ strings, and components is intended to hold maps of the component names to the c
 class SystemBase
 {
 public:
-	SystemBase();
-	~SystemBase();
-	
-	std::vector<std::string> requiredComponents;
-
-	virtual void Update(float deltaT);
+	virtual void Update(float deltaT) = 0;
 };
 

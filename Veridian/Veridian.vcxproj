@@ -134,10 +134,12 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ComponentPosition.cpp" />
+    <ClCompile Include="ComponentSprite.cpp" />
     <ClCompile Include="DisplayManager.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="SystemDisplay.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -145,10 +147,12 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ComponentBase.h" />
     <ClInclude Include="ComponentPosition.h" />
+    <ClInclude Include="ComponentSprite.h" />
     <ClInclude Include="DisplayManager.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="SystemBase.h" />
+    <ClInclude Include="SystemDisplay.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

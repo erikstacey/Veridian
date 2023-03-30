@@ -9,8 +9,4 @@ Vector2 Camera::TransformWorldToLocal(Vector2 worldCoordinates) {
 	return transformVector;
 }
 
-bool Camera::IsVisible(Rectangle r) {
-	return true;
-}
-
 

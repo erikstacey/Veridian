@@ -1,5 +1,6 @@
 #pragma once
 #include "EntityManager.h"
+#include "SystemDisplay.h"
 
 /*
 A world is a self-contained gameworld, with a coordinate system, a tilemap, an entity system, and a set of behavioural systems.
@@ -11,10 +12,13 @@ class DisplayManager;
 
 class World {
 public:
-	World();
 	World(DisplayManager* displayManager);
 	~World();
+	// entity manager stores components and entities
 	EntityManager* entityManager;
-	DisplayManager* displayManager;
+	// systems handle behaviour at the world level
+	SystemDisplay* mainDisplaySystem;
+
+	void Update(float deltaT);
 };
 

@@ -23,6 +23,7 @@ public:
 	SDL_Texture* textures[65535]; // max size of unsigned short int.
 	// Keeping the textures limited means we can use 2-byte integers in
 	// world tilemaps, saving ram
+	void drawTex(Vector2 screenCoordinates, int textureId, float scale);
 
 private:
 	SDL_Renderer* renderer = NULL;
@@ -32,6 +33,6 @@ private:
 
 	bool loadAllTextures(std::string registry);
 	bool loadTex(std::string fname, int index);
-	void drawTex(Vector2 screenCoordinates, int i, float zoom);
+	
 };
 

@@ -5,9 +5,10 @@
 class ComponentPosition : public ComponentBase
 {
 public:
-	std::vector<Vector2> data;
+	std::vector<Vector2>* data;
 
 	ComponentPosition();
+	~ComponentPosition();
 
 	void RegisterEntity(int id) override;
 	void SetValue(int id, Vector2 v);

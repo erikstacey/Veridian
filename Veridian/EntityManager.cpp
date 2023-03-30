@@ -1,6 +1,10 @@
 #include "EntityManager.h"
+#include "ComponentPosition.h"
+#include "ComponentSprite.h"
 
 EntityManager::EntityManager() {
+	components["position"] = new ComponentPosition();
+	components["sprite"] = new ComponentSprite();
 }
 
 

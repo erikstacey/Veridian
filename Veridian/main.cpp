@@ -10,23 +10,38 @@
 #include <math.h>
 #include "EntityManager.h"
 #include "ComponentPosition.h"
+#include "ComponentSprite.h"
 #include "Vector2.h"
+#include "SystemDisplay.h"
 
 
 int main(int argc, char* args[]) {
 	DisplayManager displayManager(1920, 1080);
 
-	ComponentPosition testComponentPosition;
-	testComponentPosition.RegisterEntity(1);
-	testComponentPosition.SetValue(1, Vector2(0, 3.2));
-	Vector2* testVector = testComponentPosition.GetValue(1);
-	printf("%f, %f", testVector->x, testVector->y);
+	ComponentPosition testCPosition;
+	testCPosition.RegisterEntity(1);
+	testCPosition.SetValue(1, Vector2(0.1, 0.3));
+	testCPosition.RegisterEntity(2);
+	testCPosition.UnregisterEntity(2);
+	ComponentSprite testCSprite;
+	testCSprite.RegisterEntity(1);
+	testCSprite.SetValue(1, 1, 1, 0);
 
-	testComponentPosition.UnregisterEntity(1);
+	Vector2* testCameraPosition = new Vector2(0, 0);
+	Camera * testCamera = new Camera(testCameraPosition, 1920, 1080);
+	SystemDisplay* testSystemDisplay = new SystemDisplay(&testCPosition, &testCSprite, testCamera, &displayManager);
+
 
 	SDL_Event e;
 	bool quit = false;
-	World* world = new World();
+	// set up a test world and entity
+	World* world = new World(&displayManager);
+
+	int testEntity = world->entityManager->CreateEntity();
+	world->entityManager->AddComponent(testEntity, "position");
+	world->entityManager->AddComponent(testEntity, "sprite");
+	world->mainDisplaySystem->SetActiveCamera(testCamera);
+
 	// start main loop
 	while (!quit) {
 		// handle SDL event stack
@@ -42,6 +57,7 @@ int main(int argc, char* args[]) {
 		
 		// draw to the screen
 		displayManager.frameSetup();
+		world->Update(0);
 		displayManager.framePush();
 
 	}

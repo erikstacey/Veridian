@@ -19,7 +19,5 @@ public:
 	Camera(Vector2* pos, int spanX, int spanY);
 
 	Vector2 TransformWorldToLocal(Vector2 worldCoordinates);
-	Vector2 TransformLocalToWorld(Vector2 localCoordinates);
-	bool IsVisible(Rectangle r);
 };
 

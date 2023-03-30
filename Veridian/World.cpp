@@ -1,15 +1,14 @@
 #include "World.h"
-#include <math.h>
 
-World::World() {
+World::World(DisplayManager* displayManager) {
 	entityManager = new EntityManager();
+	mainDisplaySystem = new SystemDisplay(
+		dynamic_cast<ComponentPosition*>(entityManager->components["position"]),
+		dynamic_cast<ComponentSprite*>(entityManager->components["sprite"]), 
+		NULL, 
+		displayManager);
 }
 
-World::World(DisplayManager* displayManager) : displayManager(displayManager) {
-	entityManager = new EntityManager();
+void World::Update(float deltaT) {
+	mainDisplaySystem->Update(deltaT);
 }
-
-World::~World() {
-	delete entityManager;
-}
-

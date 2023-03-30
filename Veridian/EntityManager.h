@@ -12,6 +12,8 @@ class EntityManager
 {
 public:
 	EntityManager();
+	// ADD A DESTRUCTOR THAT DESTROYS THE COMPONENTS
+	// OR YOU'LL BE LEAKIN MEMORY LIKE A SIEVE
 	// Components
 	std::unordered_map<std::string, ComponentBase*> components;
 
