@@ -13,11 +13,14 @@
 #include "ComponentSprite.h"
 #include "Vector2.h"
 #include "SystemDisplay.h"
+#include <chrono>
 
 
 int main(int argc, char* args[]) {
 	DisplayManager displayManager(1920, 1080);
 
+
+	// Test Code
 	ComponentPosition testCPosition;
 	testCPosition.RegisterEntity(1);
 	testCPosition.SetValue(1, Vector2(0.1, 0.3));
@@ -32,8 +35,7 @@ int main(int argc, char* args[]) {
 	SystemDisplay* testSystemDisplay = new SystemDisplay(&testCPosition, &testCSprite, testCamera, &displayManager);
 
 
-	SDL_Event e;
-	bool quit = false;
+	
 	// set up a test world and entity
 	World* world = new World(&displayManager);
 
@@ -41,6 +43,18 @@ int main(int argc, char* args[]) {
 	world->entityManager->AddComponent(testEntity, "position");
 	world->entityManager->AddComponent(testEntity, "sprite");
 	world->mainDisplaySystem->SetActiveCamera(testCamera);
+
+	// End Test Code
+
+	// pre-engine loop code
+	SDL_Event e;
+	bool quit = false;
+	// set up time tracking
+	std::chrono::steady_clock::time_point lastFrameTimestamp = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point curFrameTimestamp = std::chrono::steady_clock::now();
+	std::chrono::microseconds lastFrameTime;
+	float lastFrameTimeMsFloat;
+
 
 	// start main loop
 	while (!quit) {
@@ -54,10 +68,17 @@ int main(int argc, char* args[]) {
 
 			}
 		}
+		// get time since last frame
+		lastFrameTimestamp = curFrameTimestamp;
+		curFrameTimestamp = std::chrono::steady_clock::now();
+		lastFrameTime = std::chrono::duration_cast<std::chrono::microseconds> (curFrameTimestamp - lastFrameTimestamp);
+		lastFrameTimeMsFloat = static_cast<float>(lastFrameTime.count()) / 1000;
+
+		printf("Frame Time: %f (%f fps)\n", lastFrameTimeMsFloat, 1/(lastFrameTimeMsFloat/1000));
 		
 		// draw to the screen
 		displayManager.frameSetup();
-		world->Update(0);
+		world->Update(lastFrameTimeMsFloat);
 		displayManager.framePush();
 
 	}
