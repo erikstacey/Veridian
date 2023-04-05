@@ -63,6 +63,9 @@
     <ClCompile Include="SystemDisplay.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="WorldFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DisplayManager.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="SystemDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

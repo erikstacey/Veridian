@@ -30,7 +30,7 @@ void SystemDisplay::Update(float deltaT) {
 			cId = it->first;
 			cSpritePacket = sprite->GetValue(cId);
 			cDrawCoordinates = camera->TransformWorldToLocal(*(position->GetValue(cId)));
-			displayManager->drawTex(cDrawCoordinates, cSpritePacket->textureId, cSpritePacket->scale);
+			displayManager->DrawTex(cDrawCoordinates, cSpritePacket->textureId, cSpritePacket->scale);
 		}
 	}
 }

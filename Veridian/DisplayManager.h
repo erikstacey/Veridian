@@ -9,30 +9,31 @@
 class DisplayManager
 {
 public:
-	DisplayManager(int x, int y);
+	DisplayManager();
 	~DisplayManager();
-	bool bootSDL();
-	bool renderWindowSetup(int w, int h);
+	bool Initialize();
+	bool Initialize(int x, int y);
+	bool BootSDL();
+	bool RenderWindowSetup();
+	bool Reboot();
 
-	int windowW;
-	int windowH;
+	void FrameSetup();
+	void FramePush();
 
-	void frameSetup();
-	void framePush();
+	int displayWidth, displayHeight;
 
 	SDL_Texture* textures[65535]; // max size of unsigned short int.
 	// Keeping the textures limited means we can use 2-byte integers in
 	// world tilemaps, saving ram
-	void drawTex(Vector2 screenCoordinates, int textureId, float scale);
+	void DrawTex(Vector2 screenCoordinates, int textureId, float scale);
 
 private:
 	SDL_Renderer* renderer = NULL;
 	SDL_Window* window = NULL;
 	SDL_Surface* screenSurface = NULL;
-	int displayWidth, displayHeight;
 
-	bool loadAllTextures(std::string registry);
-	bool loadTex(std::string fname, int index);
+	bool LoadAllTextures(std::string registry);
+	bool LoadTex(std::string fname, int index);
 	
 };
 

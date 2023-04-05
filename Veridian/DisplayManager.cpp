@@ -5,43 +5,65 @@
 
 
 
-DisplayManager::DisplayManager(int w, int h) {
-	// Constructor for displaymanager initializes SDL, then creates a window and renderer, and finally loads all textures
-	printf("[INIT] Display manager starting with w=%d, h=%d\n", w, h);
-	displayWidth = w;
-	displayHeight = h;
-	// startup fare. Loads SDL/SDL_image, then tries to create a window
-	if (!bootSDL()) {
+DisplayManager::DisplayManager() {
+	// most setup is handled by Initialize, which should be the first thing called in main
+}
+
+bool DisplayManager::Initialize(int x, int y) {
+	displayHeight = y; displayWidth = x;
+	return Initialize();
+}
+
+bool DisplayManager::Initialize() {
+	printf("[INIT] Display manager starting with w=%d, h=%d\n", displayWidth, displayHeight);
+	if (!BootSDL()) {
 		printf("[INIT] DisplayManager: Failed\n");
 		printf("\t SDL boot failed.\n");
+		return 0;
 	}
-	else if (!renderWindowSetup(w, h)) {
+	else if (!RenderWindowSetup()) {
 		printf("[INIT] DisplayManager: Failed\n");
 		printf("\t Renderer and window setup failed.\n");
+		return 0;
 	}
 	else {
 		printf("[INIT] DisplayManager: Success\n");
 	}
 	// load textures
-	if (!loadAllTextures("asdf")) {
+	if (!LoadAllTextures("asdf")) {
 		printf("[TEX] All Textures: Failed\n");
+		return 0;
 	}
 	else {
 		printf("[TEX] All Textures: Success\n");
 	}
+	return 1;
 }
+
+bool DisplayManager::Reboot() {
+	// Destroy all objects and quit SDL/Subsystems
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	window = nullptr; renderer = nullptr;
+	IMG_Quit();
+	SDL_Quit();
+
+	// Re-initialize
+	return Initialize();
+}
+
+
 
 DisplayManager::~DisplayManager() {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	window = NULL;
-	renderer = NULL;
-	SDL_Quit();
+	window = nullptr;
+	renderer = nullptr;
 	IMG_Quit();
-
+	SDL_Quit();
 }
 
-bool DisplayManager::bootSDL() {
+bool DisplayManager::BootSDL() {
 	// Starts up SDL and SDL image
 	bool s = true;
 	printf("[INIT] SDL: ");
@@ -64,11 +86,11 @@ bool DisplayManager::bootSDL() {
 	return s;
 }
 
-bool DisplayManager::renderWindowSetup(int w, int h) {
+bool DisplayManager::RenderWindowSetup() {
 	// Creates a window and renderer
 	bool s = true;
 	// set up window and renderer
-	window = SDL_CreateWindow("GameEnginePrototype", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("GameEnginePrototype", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, displayWidth, displayHeight, SDL_WINDOW_SHOWN);
 	printf("[INIT] SDL Window: ");
 	if (window == NULL) {
 		printf("Failed\n");
@@ -91,12 +113,10 @@ bool DisplayManager::renderWindowSetup(int w, int h) {
 			screenSurface = SDL_GetWindowSurface(window);
 		}
 	}
-	windowW = w;
-	windowH = h;
 	return s;
 }
 
-bool DisplayManager::loadTex(std::string fname, int index) {
+bool DisplayManager::LoadTex(std::string fname, int index) {
 	// Loads a single texture using SDL_Image IMG_Load, then stores it in the textures array at position index
 	bool s = true;
 	SDL_Surface* loadedSurface = IMG_Load(fname.c_str());
@@ -113,34 +133,34 @@ bool DisplayManager::loadTex(std::string fname, int index) {
 			s = false;
 		}
 		else {
-			printf("[TEX] %s: Success", fname.c_str());
+			printf("[TEX] %s: Success\n", fname.c_str());
 			SDL_FreeSurface(loadedSurface);
 		}
 	}
 	return s;
 }
 
-bool DisplayManager::loadAllTextures(std::string registry) {
+bool DisplayManager::LoadAllTextures(std::string registry) {
 	// A method to load all textures. Currently temporary.
-	loadTex("res/textures/grass1.png", 0);
-	loadTex("res/textures/water1.png", 1);
-	loadTex("res/textures/stone1.png", 2);
-	loadTex("res/textures/player1.png", 3);
+	LoadTex("res/textures/grass1.png", 0);
+	LoadTex("res/textures/water1.png", 1);
+	LoadTex("res/textures/stone1.png", 2);
+	LoadTex("res/textures/player1.png", 3);
 	return true;
 }
 
-void DisplayManager::drawTex(Vector2 screenCoordinates, int textureId, float scale) {
+void DisplayManager::DrawTex(Vector2 screenCoordinates, int textureId, float scale) {
 	// Draws a texture indicated by textureId at screenCoordinates scaled by scale. Note that screencoordinates are the
 	// pixel coordinates of the window. E.g. for a 1920x1080 screen, Vector2.x must be greater than zero and less than 1920.
 	SDL_Rect drawRect = { screenCoordinates.x, screenCoordinates.y, 16*scale, 16*scale};
 	SDL_RenderCopy(renderer, textures[textureId], NULL, &drawRect);
 }
 
-void DisplayManager::frameSetup() {
+void DisplayManager::FrameSetup() {
 	SDL_RenderClear(renderer);
 
 }
-void DisplayManager::framePush(){
+void DisplayManager::FramePush(){
 	SDL_RenderPresent(renderer);
 }
 

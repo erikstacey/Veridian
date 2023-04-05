@@ -9,6 +9,10 @@ World::World(DisplayManager* displayManager) {
 		displayManager);
 }
 
+World::~World() {
+
+}
+
 void World::Update(float deltaT) {
 	mainDisplaySystem->Update(deltaT);
 }

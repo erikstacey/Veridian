@@ -14,37 +14,16 @@
 #include "Vector2.h"
 #include "SystemDisplay.h"
 #include <chrono>
+#include <thread>
+#include "WorldFactory.h"
+
+WorldFactory gWorldFactory;
+DisplayManager gDisplayManager;
 
 
 int main(int argc, char* args[]) {
-	DisplayManager displayManager(1920, 1080);
-
-
-	// Test Code
-	ComponentPosition testCPosition;
-	testCPosition.RegisterEntity(1);
-	testCPosition.SetValue(1, Vector2(0.1, 0.3));
-	testCPosition.RegisterEntity(2);
-	testCPosition.UnregisterEntity(2);
-	ComponentSprite testCSprite;
-	testCSprite.RegisterEntity(1);
-	testCSprite.SetValue(1, 1, 1, 0);
-
-	Vector2* testCameraPosition = new Vector2(0, 0);
-	Camera * testCamera = new Camera(testCameraPosition, 1920, 1080);
-	SystemDisplay* testSystemDisplay = new SystemDisplay(&testCPosition, &testCSprite, testCamera, &displayManager);
-
-
-	
-	// set up a test world and entity
-	World* world = new World(&displayManager);
-
-	int testEntity = world->entityManager->CreateEntity();
-	world->entityManager->AddComponent(testEntity, "position");
-	world->entityManager->AddComponent(testEntity, "sprite");
-	world->mainDisplaySystem->SetActiveCamera(testCamera);
-
-	// End Test Code
+	// start up the display
+	gDisplayManager.Initialize(1920, 1080);
 
 	// pre-engine loop code
 	SDL_Event e;
@@ -74,12 +53,13 @@ int main(int argc, char* args[]) {
 		lastFrameTime = std::chrono::duration_cast<std::chrono::microseconds> (curFrameTimestamp - lastFrameTimestamp);
 		lastFrameTimeMsFloat = static_cast<float>(lastFrameTime.count()) / 1000;
 
-		printf("Frame Time: %f (%f fps)\n", lastFrameTimeMsFloat, 1/(lastFrameTimeMsFloat/1000));
+		// process game logic
+
 		
 		// draw to the screen
-		displayManager.frameSetup();
-		world->Update(lastFrameTimeMsFloat);
-		displayManager.framePush();
+		gDisplayManager.FrameSetup();
+		gDisplayManager.FramePush();
+
 
 	}
 	return 0;
