@@ -12,7 +12,7 @@ class DisplayManager;
 
 class World {
 public:
-	World(DisplayManager* displayManager);
+	World();
 	~World();
 	// entity manager stores components and entities
 	EntityManager* entityManager;

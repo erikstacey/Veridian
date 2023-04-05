@@ -54,7 +54,9 @@ int main(int argc, char* args[]) {
 		lastFrameTimeMsFloat = static_cast<float>(lastFrameTime.count()) / 1000;
 
 		// process game logic
-
+		for (auto it = gWorldFactory.worlds.begin(); it != gWorldFactory.worlds.end(); ++it) {
+			gWorldFactory.worlds[it->first]->Update(lastFrameTimeMsFloat);
+		}
 		
 		// draw to the screen
 		gDisplayManager.FrameSetup();

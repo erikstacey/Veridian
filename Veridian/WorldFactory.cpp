@@ -15,7 +15,7 @@ void WorldFactory::CreateWorld(std::string name) {
 		std::cout << "[WARNING] Tried to create world " << name << " but a world with that name already exists" << std::endl;
 	}
 	else {
-		worlds[name] = new World(displayManager);
+		worlds[name] = new World();
 	}
 }
 

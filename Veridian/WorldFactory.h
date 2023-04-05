@@ -8,7 +8,6 @@ class WorldFactory
 public:
 	// map of worldnames to pointers to world objects
 	std::unordered_map<std::string, World*> worlds;
-	DisplayManager* displayManager;
 
 	WorldFactory();
 	// creates a new world with the specified name

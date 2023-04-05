@@ -2,8 +2,10 @@
 #include <stdexcept>
 #include "DisplayManager.h"
 
-SystemDisplay::SystemDisplay(ComponentPosition* position, ComponentSprite* sprite, Camera* camera, DisplayManager* displayManager) :
-	position(position), sprite(sprite), camera(camera), displayManager(displayManager) {
+extern DisplayManager gDisplayManager;
+
+SystemDisplay::SystemDisplay(ComponentPosition* position, ComponentSprite* sprite, Camera* camera) :
+	position(position), sprite(sprite), camera(camera){
 	if (position == NULL) {
 		throw std::invalid_argument("Display System initialized with null position component pointer!");
 	}
@@ -15,7 +17,6 @@ SystemDisplay::~SystemDisplay() {
 	position = NULL;
 	sprite = NULL;
 	camera = NULL;
-	displayManager = NULL;
 }
 
 void SystemDisplay::Update(float deltaT) {
@@ -30,7 +31,7 @@ void SystemDisplay::Update(float deltaT) {
 			cId = it->first;
 			cSpritePacket = sprite->GetValue(cId);
 			cDrawCoordinates = camera->TransformWorldToLocal(*(position->GetValue(cId)));
-			displayManager->DrawTex(cDrawCoordinates, cSpritePacket->textureId, cSpritePacket->scale);
+			gDisplayManager.DrawTex(cDrawCoordinates, cSpritePacket->textureId, cSpritePacket->scale);
 		}
 	}
 }

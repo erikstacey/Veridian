@@ -13,9 +13,8 @@ public:
 	ComponentPosition* position;
 	ComponentSprite* sprite;
 	Camera* camera;
-	DisplayManager* displayManager;
 
-	SystemDisplay(ComponentPosition* position, ComponentSprite* sprite, Camera* camera, DisplayManager* displayManager);
+	SystemDisplay(ComponentPosition* position, ComponentSprite* sprite, Camera* camera);
 	~SystemDisplay();
 
 	void Update(float deltaT) override;
