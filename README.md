@@ -1,6 +1,6 @@
 # Veridian
 
-This project, which I've called Veridian for the sake of giving it a name, is a work-in-progress video game built on top of Simple DirectMedia Layer 2. The game itself is planned to be a building and simulation-type game set in a science fiction setting with sophisticated physics and innovative damage modelling, and my early concepts draw heavy inspiration from games like Factorio, Rimworld, and Oxygen Not Included. At its current stage, I'm developing the core functionality which is typically handled by a commercial game engine (e.g. game object management, rendering).
+This project, which I've called Veridian for the sake of giving it a name, is a work-in-progress video game built on top of Simple DirectMedia Layer 2. The game itself is planned to be a building and simulation-type game set in a science fiction setting with sophisticated physics and innovative damage modelling, and my early concepts draw heavy inspiration from games like Factorio, Rimworld, and Oxygen Not Included. At its current stage, I'm developing the core functionality which is typically handled by a game engine (e.g. game object management, rendering). I'm seeking to build an efficient, performant system which scales well to large numbers of game entities. Therefore, I've chosen to use an entity-component-system structure designed for efficient processing of game data through optimized utilization of the CPU cache.
 
 # Motivations
 
