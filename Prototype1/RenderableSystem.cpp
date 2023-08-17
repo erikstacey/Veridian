@@ -27,28 +27,28 @@ int RenderableSystem::setResources(ResourceLoader* resourceLoader, std::vector<R
 void RenderableSystem::transformPositionComponentToScreenCoordinate(PositionComponent* positionComponent, Viewport* viewport) {
 	// Using a viewport (which points to a camera, and together completely define the transformation from world to screen), translates
 	// the position component to a screen position for rendering
-	m_transformVector.x = positionComponent->x;
-	m_transformVector.y = positionComponent->y;
+	m_dstRect.x = positionComponent->x;
+	m_dstRect.y = positionComponent->y;
 
 	// adjust to camera-relative coordinates
 	if (viewport->camera->mAttached) {
-		m_transformVector.x -= viewport->camera->mAttachedTo->x;
-		m_transformVector.y -= viewport->camera->mAttachedTo->y;
+		m_dstRect.x -= viewport->camera->mAttachedTo->x;
+		m_dstRect.y -= viewport->camera->mAttachedTo->y;
 	}
-	m_transformVector.x -= viewport->camera->mPosition.x;
-	m_transformVector.y -= viewport->camera->mPosition.y;
+	m_dstRect.x -= viewport->camera->mPosition.x;
+	m_dstRect.y -= viewport->camera->mPosition.y;
 
 	// coordinates are now relative to the camera position
 	// convert to zoom adjusted coordinates
 
-	m_transformVector.x /= viewport->camera->mZoom;
-	m_transformVector.y /= viewport->camera->mZoom;
+	m_dstRect.x *= viewport->camera->mZoom;
+	m_dstRect.y *= viewport->camera->mZoom;
 
 	// now a change of 1 in any coordinate should correspond to a change of 1 pixel in screen space,
 	// and the coordinates are relative to the center of the viewport
 
-	m_transformVector.x -= (viewport->screenPosition.x + viewport->span.x / 2);
-	m_transformVector.y -= (viewport->screenPosition.y + viewport->span.y / 2);
+	m_dstRect.x += viewport->rect.w / 2;
+	m_dstRect.y += viewport->rect.h / 2;
 
 	// Done, we now have coordinates relative to the top left corner of the screen.
 
@@ -71,8 +71,6 @@ void RenderableSystem::renderAll() {
 	TextureMetaData* cTextureMetaData = nullptr;
 	Viewport* cViewport = nullptr;
 
-	SDL_Rect* srcRect = new SDL_Rect();
-	SDL_Rect* dstRect = new SDL_Rect();
 
 
 	for (int i = 0; i < m_renderableComponents->size(); i++) {
@@ -85,19 +83,16 @@ void RenderableSystem::renderAll() {
 		for (int k = 0; k < m_viewports.size(); k++) {
 			cViewport =  &m_viewports[k];
 			transformPositionComponentToScreenCoordinate(cPositionComponent, cViewport);
-			dstRect->x = m_transformVector.x;
-			dstRect->y = m_transformVector.y;
-			dstRect->w = cTextureMetaData->textureSizeX * cViewport->camera->mZoom;
-			dstRect->h = cTextureMetaData->textureSizeY * cViewport->camera->mZoom;
 
-			srcRect->x = 0;
-			srcRect->y = 0;
-			srcRect->w = cTextureMetaData->textureSizeX;
-			srcRect->h = cTextureMetaData->textureSizeY;
+			m_dstRect.w = cTextureMetaData->textureSizeX * cViewport->camera->mZoom;
+			m_dstRect.h = cTextureMetaData->textureSizeY * cViewport->camera->mZoom;
 
-			SDL_RenderCopy(m_renderer, cTexture, srcRect, dstRect);
+			m_srcRect.x = 0;
+			m_srcRect.y = 0;
+			m_srcRect.w = cTextureMetaData->textureSizeX;
+			m_srcRect.h = cTextureMetaData->textureSizeY;
+
+			SDL_RenderCopy(m_renderer, cTexture, &m_srcRect, &m_dstRect);
 		}
 	}
-	delete srcRect;
-	delete dstRect;
 }

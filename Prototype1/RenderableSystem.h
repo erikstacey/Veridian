@@ -13,14 +13,12 @@
 // Viewport indicates an area on the screen which is connected to a camera 
 struct Viewport {
 	Camera* camera;
-	Vector2i screenPosition = Vector2i(0, 0);
-	Vector2i span = Vector2i(0, 0);
-	Viewport(Camera* camera) : camera(camera) {}
+	SDL_Rect rect;
 	Viewport(Camera* camera, int xPosition, int yPosition, int xSpan, int ySpan) : camera(camera) {
-		screenPosition.x = xPosition;
-		screenPosition.y = yPosition;
-		span.x = xSpan;
-		span.y = ySpan;
+		rect.x = xPosition;
+		rect.y = yPosition;
+		rect.w = xSpan;
+		rect.h = ySpan;
 	}
 };
 
@@ -45,8 +43,9 @@ public:
 	void renderAll();
 
 private:
-	// Keep a vector in memory such that we don't need to reallocate memory for every transformation
-	Vector2 m_transformVector;
+	// Keep two SDL_Rects in memory such that we don't need to reallocate memory for every render pass
+	SDL_Rect m_srcRect;
+	SDL_Rect m_dstRect;
 	SDL_Renderer* m_renderer;
 
 };
